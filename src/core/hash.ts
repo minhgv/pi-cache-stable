@@ -17,19 +17,28 @@ export function shortFingerprint(data: string | Buffer): string {
 /**
  * Idempotently serializes any JavaScript value into a deterministic JSON string.
  * Recursively sorts object keys while preserving array ordering.
+ * Handles circular references gracefully.
  */
-export function canonicalStringify(val: unknown): string {
+export function canonicalStringify(val: unknown, seen = new WeakSet()): string {
   if (val === undefined) return "null";
   if (val === null || typeof val !== "object") {
     return JSON.stringify(val);
   }
+  if (seen.has(val)) {
+    return '"[Circular]"';
+  }
+  seen.add(val);
+
   if (Array.isArray(val)) {
-    return "[" + val.map((item) => canonicalStringify(item)).join(",") + "]";
+    const res = "[" + val.map((item) => canonicalStringify(item, seen)).join(",") + "]";
+    seen.delete(val);
+    return res;
   }
   const obj = val as Record<string, unknown>;
   const sortedKeys = Object.keys(obj).sort();
   const entries = sortedKeys.map(
-    (key) => `${JSON.stringify(key)}:${canonicalStringify(obj[key])}`
+    (key) => `${JSON.stringify(key)}:${canonicalStringify(obj[key], seen)}`
   );
+  seen.delete(val);
   return "{" + entries.join(",") + "}";
 }
