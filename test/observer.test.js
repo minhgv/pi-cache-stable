@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert";
-import { CacheObserver } from "../src/telemetry/observer.js";
-import { canonicalizeTools } from "../src/core/schema-canonicalizer.js";
-import { extractStructuralView } from "../src/core/structural-view.js";
-import { canonicalStringify } from "../src/core/hash.js";
-import { sanitizeTelemetryData } from "../src/telemetry/redaction.js";
-import cacheStableExtension from "../src/openclaw-extension.js";
+import { CacheObserver } from "../dist/telemetry/observer.js";
+import { canonicalizeTools } from "../dist/core/schema-canonicalizer.js";
+import { extractStructuralView } from "../dist/core/structural-view.js";
+import { canonicalStringify } from "../dist/core/hash.js";
+import { sanitizeTelemetryData } from "../dist/telemetry/redaction.js";
+import cacheStableExtension from "../dist/openclaw-extension.js";
 
 test("extractStructuralView extracts OpenAI shapes correctly", () => {
   const payload = {
@@ -34,15 +34,15 @@ test("canonicalizeTools sorts tool names and required arrays deterministically",
   const { canonicalTools } = canonicalizeTools(toolsUnsorted);
   assert.strictEqual(canonicalTools[0].name, "read");
   assert.strictEqual(canonicalTools[1].name, "write");
-  const params0 = canonicalTools[0].parameters as any;
-  const params1 = canonicalTools[1].parameters as any;
+  const params0 = canonicalTools[0].parameters;
+  const params1 = canonicalTools[1].parameters;
   assert.deepStrictEqual(params0.required, ["file"]);
   assert.deepStrictEqual(params1.required, ["content", "file"]);
 });
 
 test("canonicalStringify handles circular references without throwing", () => {
   const circularObj = { name: "test" };
-  (circularObj as any).self = circularObj;
+  circularObj.self = circularObj;
 
   const result = canonicalStringify(circularObj);
   assert.strictEqual(typeof result, "string");
@@ -59,7 +59,7 @@ test("sanitizeTelemetryData redacts sensitive keys recursively", () => {
     },
   };
 
-  const sanitized = sanitizeTelemetryData(sensitiveData) as any;
+  const sanitized = sanitizeTelemetryData(sensitiveData);
   assert.strictEqual(sanitized.apiKey, "[REDACTED]");
   assert.strictEqual(sanitized.nested.authorization, "[REDACTED]");
   assert.strictEqual(sanitized.nested.password, "[REDACTED]");
@@ -74,7 +74,7 @@ test("cacheStableExtension observe mode is 100% fail-open and leaves payload unt
 
   let handlerCalled = false;
   const mockPi = {
-    on(event: string, handler: (e: any) => void) {
+    on(event, handler) {
       if (event === "before_provider_request") {
         handlerCalled = true;
         const result = handler({ payload: originalPayload });
