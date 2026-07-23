@@ -1,0 +1,30 @@
+{
+  "name": "pi-cache-stable",
+  "version": "1.0.0",
+  "description": "Production-grade prompt cache stabilization and telemetry engine for Pi CLI and OpenClaw",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test test/*.test.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "pi",
+    "openclaw",
+    "prompt-cache",
+    "telemetry",
+    "cache-first",
+    "llm"
+  ],
+  "author": "AGY & Minh <minhgv@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
