@@ -64,7 +64,7 @@ The keys in `reasoningPolicy.stripReasoningHistory` use **Case-Insensitive Subst
 | `"google-antigravity"` | `google-antigravity`, `google-antigravity/gemini-3.6-flash-high`, `antigravity` | `false` — Preserve thought signatures |
 | `"anthropic"` | `anthropic`, `anthropic/claude-3-5-sonnet`, `anthropic/claude-3-opus` | `false` — Preserve thought signatures |
 | `"openai"` | `openai`, `openai/gpt-4o`, `openai/gpt-4o-mini`, `o1`, `o3-mini` | `false` — Managed automatically via OpenAI Cache Engine |
-| `"openai-codex"` | `openai-codex`, `codex` | `false` — Managed automatically via OpenAI Cache Engine |
+| `"openai-codex"` | `openai-codex`, `codex`, `gpt-5.1`, `gpt-5.1-codex-max`, `gpt-5.2-codex`, `gpt-5.3-codex`, `gpt-5.4` | `false` — Managed automatically via OpenAI Cache Engine |
 | `"deepseek"` | `deepseek`, `deepseek-ai/deepseek-r1` | `true` — Strip historical reasoning turns |
 | `"glm"` | `glm`, `glm-4`, `zhipu/glm-4` | `true` — Strip historical reasoning turns |
 | `"xiaomi-mimo"` | `xiaomi-mimo`, `xiaomi-mimo/mimo-v1`, `xiaomi-mimo/mimo-coder` | `true` — Strip historical reasoning turns |
